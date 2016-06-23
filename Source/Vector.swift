@@ -37,7 +37,7 @@ public class Vector {
     }
     
     public init(size: Int) {
-        self.flat = [Double](count: size, repeatedValue: 0.0)
+        self.flat = [Double](repeating: 0.0, count: size)
     }
     
     /// Returns/sets the element value at the given index.
@@ -52,7 +52,7 @@ public class Vector {
     
     // TODO: Finish this.
     /// Computes the dot product of the receiver with another vector.
-    public func dot(v: Vector) -> Double {
+    public func dot(_ v: Vector) -> Double {
         var c: Double = 0.0
         vDSP_dotprD(self.flat, 1, self.flat, 1, &c, vDSP_Length(self.size))
         return 0.0
