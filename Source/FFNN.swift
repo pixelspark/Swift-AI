@@ -358,7 +358,7 @@ public extension FFNN {
     
     /// Returns an NSURL for a document with the given filename in the default documents directory.
     public static func getFileURL(_ filename: String) -> URL {
-        let manager = FileManager.default()
+        let manager = FileManager.default
         let dirURL = try! manager.urlForDirectory(.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         return try! dirURL.appendingPathComponent(filename)
     }
@@ -410,7 +410,7 @@ public extension FFNN {
         storage["activationFunction"] = self.activationFunction.rawValue
         
         let data: Data = NSKeyedArchiver.archivedData(withRootObject: storage)
-        _ = try? data.write(to: url, options: [.dataWritingAtomic])
+        _ = try? data.write(to: url, options: [.atomicWrite])
     }
     
     /// Computes the error over the given training set.
