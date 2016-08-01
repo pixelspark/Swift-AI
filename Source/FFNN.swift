@@ -14,7 +14,7 @@ import Foundation
 
 
 /// An enum containing all errors that may be thrown by FFNN.
-public enum FFNNError: ErrorProtocol {
+public enum FFNNError: Error {
     case invalidInputsError(String)
     case invalidAnswerError(String)
     case invalidWeightsError(String)
@@ -293,7 +293,7 @@ public final class FFNN {
         vDSP_mmov(newHiddenWeights, &hiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
         
         // Sum and return the output errors
-        return self.outputErrorsCache.reduce(0, combine: { (sum, error) -> Float in
+        return self.outputErrorsCache.reduce(0, { (sum, error) -> Float in
             return sum + abs(error)
         })
     }
@@ -359,8 +359,8 @@ public extension FFNN {
     /// Returns an NSURL for a document with the given filename in the default documents directory.
     public static func getFileURL(_ filename: String) -> URL {
         let manager = FileManager.default
-        let dirURL = try! manager.urlForDirectory(.documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        return try! dirURL.appendingPathComponent(filename)
+		let dirURL = try! manager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        return dirURL.appendingPathComponent(filename)
     }
     
     /// Reads a FFNN stored in a file at the given URL.
