@@ -75,10 +75,10 @@ public final class FFNN {
     }
     
     /// The activation function to use during update cycles.
-    private var activationFunction : ActivationFunction = .Sigmoid
+    internal var activationFunction : ActivationFunction = .Sigmoid
     
     /// The error function used for training
-    private var errorFunction : ErrorFunction = .default(average: false)
+    internal var errorFunction : ErrorFunction = .default(average: false)
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
      memory allocations for temporary variables during the update and backpropagation cycles.
@@ -88,34 +88,34 @@ public final class FFNN {
      
      /// (1 - momentumFactor) * learningRate.
      /// Used frequently during backpropagation.
-    private var mfLR: Float
+    internal var mfLR: Float
     
     /// The number of input nodes, INCLUDING the bias node.
-    private let numInputNodes: Int
+    internal let numInputNodes: Int
     /// The number of hidden nodes, INCLUDING the bias node.
-    private let numHiddenNodes: Int
+    internal let numHiddenNodes: Int
     /// The total number of weights connecting all input nodes to all hidden nodes.
-    private let numHiddenWeights: Int
+    internal let numHiddenWeights: Int
     /// The total number of weights connecting all hidden nodes to all output nodes.
-    private let numOutputWeights: Int
+    internal let numOutputWeights: Int
     
     /// The current weights leading into all of the hidden nodes, serialized in a single array.
-    private var hiddenWeights: [Float]
+    internal var hiddenWeights: [Float]
     /// The weights leading into all of the hidden nodes from the previous round of training, serialized in a single array.
     /// Used for applying momentum during backpropagation.
-    private var previousHiddenWeights: [Float]
+    internal var previousHiddenWeights: [Float]
     /// The current weights leading into all of the output nodes, serialized in a single array.
-    private var outputWeights: [Float]
+    internal var outputWeights: [Float]
     /// The weights leading into all of the output nodes from the previous round of training, serialized in a single array.
     /// Used for applying momentum during backpropagation.
-    private var previousOutputWeights: [Float]
+    internal var previousOutputWeights: [Float]
     
     /// The most recent set of inputs applied to the network.
     private var inputCache: [Float]
     /// The most recent outputs from each of the hidden nodes.
-    private var hiddenOutputCache: [Float]
+    internal var hiddenOutputCache: [Float]
     /// The most recent output from the network.
-    private var outputCache: [Float]
+    internal var outputCache: [Float]
     
     /// Temporary storage while calculating hidden errors, for use during backpropagation.
     private var hiddenErrorSumsCache: [Float]
@@ -399,7 +399,7 @@ public extension FFNN {
     
     /// Writes the current state of the FFNN to a file at the given URL.
     public func write(_ url: URL) {
-        var storage = [String : AnyObject]()
+        var storage = [String : Any]()
         storage["inputs"] = self.numInputs
         storage["hidden"] = self.numHidden
         storage["outputs"] = self.numOutputs
@@ -443,7 +443,7 @@ public extension FFNN {
     }
     
     /// Applies the activation function to the hidden layer nodes.
-    private func activateHidden() {
+    internal func activateHidden() {
         switch self.activationFunction {
         case .None:
             for i in (1...self.numHidden).reversed() {
@@ -480,7 +480,7 @@ public extension FFNN {
     }
     
     /// Applies the activation function to the output layer nodes.
-    private func activateOutput() {
+    internal func activateOutput() {
         switch self.activationFunction {
         case .None:
             for i in 0..<self.numOutputs {
@@ -523,7 +523,7 @@ public extension FFNN {
     }
     
     /// Calculates the derivative of the activation function, from the given `y` value.
-    private func activationDerivative(_ output: Float) -> Float {
+    internal func activationDerivative(_ output: Float) -> Float {
         switch self.activationFunction {
         case .None:
             return 0.0
@@ -543,7 +543,7 @@ public extension FFNN {
     }
     
     /// Randomizes all of the network's weights, from each layer.
-    private func randomizeWeights() {
+    internal func randomizeWeights() {
         for i in 0..<self.numHiddenWeights {
             self.hiddenWeights[i] = randomWeight(numInputNodes: self.numInputNodes)
         }
